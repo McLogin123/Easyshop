@@ -26,15 +26,21 @@ def pagina_productos():
 
 @app.route('/crear_producto', methods=['POST'])
 def crear_producto():
+    producto_id = request.form.get("id")
+    if producto_id:
+        producto_id = str(producto_id)
+
     nuevo_producto = {
-        "_id": request.form.get("id", ObjectId()),
+        "_id": producto_id if producto_id else ObjectId(),
         "nombre": request.form["nombre"],
-        "precio": int(request.form["precio"]),
-        "stock": int(request.form["stock"]),
-        "categoria": request.form["categoria"],
-        "descripcion": request.form.get("descripcion", "")
+        "precio": float(request.form["precio"]),
+        "categoria": request.form["categoria"]
     }
-    productos.insert_one(nuevo_producto)
+
+    try:
+        productos.insert_one(nuevo_producto)
+    except pymongo.errors.DuplicateKeyError:
+        return render_template("error.html", mensaje="Error: El ID del producto ya existe. Por favor, usa otro ID.")
     return redirect(url_for('pagina_productos'))
 
 @app.route('/eliminar_producto/<id>', methods=['POST'])
@@ -93,8 +99,12 @@ def pagina_trabajadores():
 
 @app.route('/crear_trabajador', methods=['POST'])
 def crear_trabajador():
+    trabajador_id = request.form.get("id")
+    if trabajador_id:
+        trabajador_id = str(trabajador_id)
+
     nuevo_trabajador = {
-        "_id": request.form.get("id", ObjectId()),
+        "_id": trabajador_id if trabajador_id else ObjectId(),
         "nombre": request.form["nombre"],
         "tipo": request.form["tipo"],
         "contacto": {
@@ -102,7 +112,11 @@ def crear_trabajador():
             "email": request.form["email"]
         }
     }
-    trabajador.insert_one(nuevo_trabajador)
+
+    try:
+        trabajador.insert_one(nuevo_trabajador)
+    except pymongo.errors.DuplicateKeyError:
+        return render_template("error.html", mensaje="Error: El ID del trabajador ya existe. Por favor, usa otro ID.")
     return redirect(url_for('pagina_trabajadores'))
 
 @app.route('/editar_trabajador/<id>', methods=['GET'])
@@ -158,11 +172,19 @@ def pagina_clientes():
 
 @app.route('/crear_cliente', methods=['POST'])
 def crear_cliente():
+    cliente_id = request.form.get("id")
+    if cliente_id:
+        cliente_id = str(cliente_id)
+
     nuevo_cliente = {
-        "_id": request.form.get("id", ObjectId()),
+        "_id": cliente_id if cliente_id else ObjectId(),
         "nombre": request.form["nombre"]
     }
-    cliente.insert_one(nuevo_cliente)
+
+    try:
+        cliente.insert_one(nuevo_cliente)
+    except pymongo.errors.DuplicateKeyError:
+        return render_template("error.html", mensaje="Error: El ID del cliente ya existe. Por favor, usa otro ID.")
     return redirect(url_for('pagina_clientes'))
 
 @app.route('/editar_cliente/<id>', methods=['GET'])
@@ -255,8 +277,7 @@ def guardar_boleta():
     try:
         boleta.insert_one(nueva_boleta)
     except pymongo.errors.DuplicateKeyError:
-        return "Error: El ID de la boleta ya existe. Por favor, usa otro ID.", 400
-
+        return render_template("error.html", mensaje="Error: El ID de la boleta ya existe. Por favor, usa otro ID.")
     return redirect(url_for('pagina_boletas'))
 
 @app.route('/eliminar_boleta/<id>', methods=['POST'])
