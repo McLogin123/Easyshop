@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, render_template, redirect, url_for
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import datetime
+import pymongo
 
 app = Flask(__name__)
 client = MongoClient("mongodb+srv://sebastian_admin:admin..@cluster0.qyojj.mongodb.net/")
@@ -221,7 +222,10 @@ def crear_boleta():
 
 @app.route('/guardar_boleta', methods=['POST'])
 def guardar_boleta():
-    boleta_id = request.form.get("boleta_id", str(ObjectId()))
+    boleta_id = request.form.get("boleta_id")
+    if boleta_id:
+        boleta_id = str(boleta_id)
+    
     cliente_id = request.form["cliente_id"]
     trabajador_id = request.form["trabajador_id"]
     productos_comprados = []
@@ -240,7 +244,7 @@ def guardar_boleta():
             total += subtotal
 
     nueva_boleta = {
-        "_id": boleta_id,
+        "_id": boleta_id if boleta_id else ObjectId(),
         "cliente_id": cliente_id,
         "trabajador_id": trabajador_id,
         "productos": productos_comprados,
@@ -248,9 +252,12 @@ def guardar_boleta():
         "fecha": datetime.datetime.now()
     }
 
-    boleta.insert_one(nueva_boleta)
-    return redirect(url_for('pagina_boletas'))
+    try:
+        boleta.insert_one(nueva_boleta)
+    except pymongo.errors.DuplicateKeyError:
+        return "Error: El ID de la boleta ya existe. Por favor, usa otro ID.", 400
 
+    return redirect(url_for('pagina_boletas'))
 
 @app.route('/eliminar_boleta/<id>', methods=['POST'])
 def eliminar_boleta(id):
