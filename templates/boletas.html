@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Boletas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h2>Buscar Boleta</h2>
+    <form action="{{ url_for('buscar_boleta') }}" method="GET">
+        <label for="criterio">Buscar por:</label>
+        <select id="criterio" name="criterio">
+            <option value="cliente_id">Cliente ID</option>
+            <option value="trabajador_id">Trabajador ID</option>
+            <option value="fecha">Fecha</option>
+        </select>
+
+        <label for="valor">Valor:</label>
+        <input type="text" id="valor" name="valor">
+
+        <button type="submit">Buscar</button>
+    </form>
+    <h1>Lista de Boletas</h1>
+    {% if boletas %}
+        <ul>
+            {% for b in boletas %}
+                <li>
+                    <strong>ID Boleta:</strong> {{ b._id }} <br>
+                    <strong>Cliente ID:</strong> {{ b.cliente_id }} <br>
+                    <strong>Trabajador ID:</strong> {{ b.trabajador_id }} <br>
+                    <strong>Productos Comprados:</strong>
+                    <ul>
+                        {% for producto in b.productos %}
+                            <li>{{ producto.nombre }} - Cantidad: {{ producto.cantidad }} - Subtotal: {{ producto.subtotal }}</li>
+                        {% endfor %}
+                    </ul>
+                    <strong>Total:</strong> {{ b.total }} <br>
+                    <strong>Fecha:</strong> {{ b.fecha }}
+
+                    <form action="{{ url_for('eliminar_boleta', id=b._id) }}" method="POST" style="display:inline;">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </li>
+                <hr>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hay boletas registradas.</p>
+    {% endif %}
+
+    <h2>Crear Nueva Boleta</h2>
+    <form action="{{ url_for('guardar_boleta') }}" method="POST">
+        <label for="boleta_id">ID de la Boleta:</label>
+        <input type="text" id="boleta_id" name="boleta_id" placeholder="Se generará automáticamente si se deja vacío" required>
+    
+        <label for="cliente_id">Cliente:</label>
+        <select id="cliente_id" name="cliente_id" required>
+            {% for c in clientes %}
+                <option value="{{ c._id }}">{{ c.nombre }}</option>
+            {% endfor %}
+        </select>
+    
+        <label for="trabajador_id">Trabajador:</label>
+        <select id="trabajador_id" name="trabajador_id" required>
+            {% for t in trabajadores %}
+                <option value="{{ t._id }}">{{ t.nombre }}</option>
+            {% endfor %}
+        </select>
+    
+        <h3>Productos</h3>
+        {% for p in productos %}
+            <label>{{ p.nombre }} - Precio: {{ p.precio }}</label>
+            <input type="number" name="cantidad_{{ p._id }}" min="0" placeholder="Cantidad">
+            <br>
+        {% endfor %}
+    
+        <button type="submit">Guardar Boleta</button>
+    </form>
+    
+</body>

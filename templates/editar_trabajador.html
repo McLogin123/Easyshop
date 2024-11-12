@@ -1,0 +1,16 @@
+<h2>Editar Trabajador</h2>
+<form action="{{ url_for('actualizar_trabajador', id=trabajador._id) }}" method="POST">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" value="{{ trabajador.nombre }}" required>
+    
+    <label for="tipo">Tipo:</label>
+    <input type="text" id="tipo" name="tipo" value="{{ trabajador.tipo }}" required>
+    
+    <label for="telefono">Teléfono:</label>
+    <input type="text" id="telefono" name="telefono" value="{{ trabajador.contacto.telefono }}" required>
+    
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="{{ trabajador.contacto.email }}" required>
+    
+    <button type="submit">Actualizar Trabajador</button>
+</form>

@@ -1,0 +1,29 @@
+<h2>Crear Nueva Boleta</h2>
+<form action="{{ url_for('guardar_boleta') }}" method="POST">
+    <label for="cliente_id">Cliente:</label>
+    <select id="cliente_id" name="cliente_id" required>
+        {% for c in clientes %}
+            <option value="{{ c._id }}">{{ c.nombre }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="trabajador_id">Trabajador:</label>
+    <select id="trabajador_id" name="trabajador_id" required>
+        {% for t in trabajadores %}
+            <option value="{{ t._id }}">{{ t.nombre }}</option>
+        {% endfor %}
+    </select>
+
+    <h3>Productos</h3>
+    {% for p in productos %}
+        <label>
+            <input type="checkbox" name="producto_id" value="{{ p._id }}">
+            {{ p.nombre }} - Precio: {{ p.precio }}
+        </label>
+        <label for="cantidad_{{ p._id }}">Cantidad:</label>
+        <input type="number" name="cantidad" id="cantidad_{{ p._id }}" min="1">
+        <br>
+    {% endfor %}
+
+    <button type="submit">Guardar Boleta</button>
+</form>

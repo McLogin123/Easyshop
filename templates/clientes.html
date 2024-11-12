@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Clientes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h2>Buscar Cliente</h2>
+    <form action="{{ url_for('buscar_cliente') }}" method="GET">
+        <label for="criterio">Buscar por:</label>
+        <select id="criterio" name="criterio">
+            <option value="id">ID</option>
+            <option value="nombre">Nombre</option>
+        </select>
+
+        <label for="valor">Valor:</label>
+        <input type="text" id="valor" name="valor">
+
+        <button type="submit">Buscar</button>
+    </form>
+
+    <ul>
+        {% for c in clientes %}
+            <li>
+                <strong>ID:</strong> {{ c._id }} <br>
+                <strong>Nombre:</strong> {{ c.nombre }}
+                <form action="{{ url_for('eliminar_cliente', id=c._id) }}" method="POST" style="display:inline;">
+                    <button type="submit">Eliminar</button>
+                </form>
+                <a href="{{ url_for('editar_cliente', id=c._id) }}">Editar</a>
+            </li>
+            <hr>
+        {% endfor %}
+    </ul>
+    
+
+    <h2>Agregar Nuevo Cliente</h2>
+    <form action="{{ url_for('crear_cliente') }}" method="POST">
+        <label for="id">ID:</label>
+        <input type="text" id="id" name="id" placeholder="Generado automáticamente si está vacío" required>
+        
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+        
+        <button type="submit">Agregar Cliente</button>
+    </form>
+</body>
