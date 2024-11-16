@@ -11,3 +11,6 @@ Para que el programa empieze a funcionar siga estos pasos:
 - En la consola poner la ruta que tiene la aplicacion (ej. cd C:\Users\user\Documents\Easyshop)
 - Ejecutar la app con "Python app.py"
 - Copiar y pegar la IP dada en el navegador 
+
+Para terminar de usar el programa siga estos pasos:
+- En la consola de comandos donde esta iniciado el programa usar 'Ctrl + C'
