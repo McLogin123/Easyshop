@@ -271,7 +271,7 @@ def guardar_boleta():
         "trabajador_id": trabajador_id,
         "productos": productos_comprados,
         "total": total,
-        "fecha": datetime.datetime.now()
+        "fecha": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
 
     try:
@@ -306,5 +306,10 @@ def buscar_boleta():
 
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
+
+if __name__ == "__main__":
+    try:
+        app.run(debug=True)
+    finally:
+        print("Cerrando servidor... Liberando recursos.")

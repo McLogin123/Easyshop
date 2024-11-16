@@ -36,7 +36,7 @@
     <h2>Agregar Nuevo Producto</h2>
     <form action="{{ url_for('crear_producto') }}" method="POST">
         <label for="id">ID:</label>
-        <input type="text" id="id" name="id" placeholder="Se generará automáticamente si se deja vacío" required>
+        <input type="text" id="id" name="id" placeholder="Continuar con el patron" required>
     
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required>
@@ -55,5 +55,8 @@
     
         <button type="submit">Agregar Producto</button>
     </form>
+
+    <h4>
+        <a href="{{ url_for('index')}}">Volver</a>
+    </h4>
 </body>
-</html>

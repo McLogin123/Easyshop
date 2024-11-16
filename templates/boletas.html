@@ -51,7 +51,7 @@
     <h2>Crear Nueva Boleta</h2>
     <form action="{{ url_for('guardar_boleta') }}" method="POST">
         <label for="boleta_id">ID de la Boleta:</label>
-        <input type="text" id="boleta_id" name="boleta_id" placeholder="Se generará automáticamente si se deja vacío" required>
+        <input type="text" id="boleta_id" name="boleta_id" placeholder="Continuar con el patron" required>
     
         <label for="cliente_id">Cliente:</label>
         <select id="cliente_id" name="cliente_id" required>
@@ -76,5 +76,7 @@
     
         <button type="submit">Guardar Boleta</button>
     </form>
-    
+    <h4>
+        <a href="{{ url_for('index')}}">Volver</a>
+    </h4>
 </body>
