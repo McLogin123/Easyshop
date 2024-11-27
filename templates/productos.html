@@ -35,27 +35,23 @@
     
     <h2>Agregar Nuevo Producto</h2>
     <form action="{{ url_for('crear_producto') }}" method="POST">
-        <label for="id">ID:</label>
-        <input type="text" id="id" name="id" placeholder="Continuar con el patron" required>
-    
-        <label for="nombre">Nombre:</label>
+        <label for="id">ID del Producto:</label>
+        <input type="text" id="id" name="id" placeholder="Continuar con el patron">
+
+        <label for="nombre">Nombre del Producto:</label>
         <input type="text" id="nombre" name="nombre" required>
-    
+
         <label for="precio">Precio:</label>
         <input type="number" id="precio" name="precio" step="0.01" required>
-    
-        <label for="stock">Stock:</label>
-        <input type="number" id="stock" name="stock" required>
-    
+
         <label for="categoria">Categoría:</label>
         <input type="text" id="categoria" name="categoria" required>
-    
-        <label for="descripcion">Descripción:</label>
-        <textarea id="descripcion" name="descripcion"></textarea>
-    
+
+        <label for="stock">Stock:</label>
+        <input type="number" id="stock" name="stock" min="0" required>
+
         <button type="submit">Agregar Producto</button>
     </form>
-
     <h4>
         <a href="{{ url_for('index')}}">Volver</a>
     </h4>

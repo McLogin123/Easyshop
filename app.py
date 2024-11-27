@@ -34,14 +34,17 @@ def crear_producto():
         "_id": producto_id if producto_id else ObjectId(),
         "nombre": request.form["nombre"],
         "precio": float(request.form["precio"]),
-        "categoria": request.form["categoria"]
+        "categoria": request.form["categoria"],
+        "stock": int(request.form["stock"])
     }
 
     try:
         productos.insert_one(nuevo_producto)
     except pymongo.errors.DuplicateKeyError:
         return render_template("error.html", mensaje="Error: El ID del producto ya existe. Por favor, usa otro ID.")
+
     return redirect(url_for('pagina_productos'))
+
 
 @app.route('/eliminar_producto/<id>', methods=['POST'])
 def eliminar_producto(id):
@@ -60,7 +63,7 @@ def actualizar_producto(id):
         {"_id": id},
         {"$set": {
             "nombre": request.form["nombre"],
-            "precio": int(request.form["precio"]),
+            "precio": float(request.form["precio"]),
             "stock": int(request.form["stock"]),
             "categoria": request.form["categoria"],
             "descripcion": request.form.get("descripcion", "")
